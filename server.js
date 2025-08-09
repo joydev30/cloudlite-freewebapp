@@ -1,18 +1,21 @@
-// server.js
 const express = require('express');
 const path = require('path');
 const app = express();
+const port = 80;
 
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from Express backend' });
+// API endpoint
+app.get('/api/status', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running smoothly!' });
 });
 
-// catch-all to serve React app
+// For any other request, serve the index.html file
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server listening on ${port}`));
+app.listen(port, () => {
+  console.log(`CloudLite app listening at http://localhost:${port}`);
+});
